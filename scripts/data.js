@@ -17,5 +17,23 @@ const functions = {
         }
 
         return Math.random()<0.5?1:0; //기저가 다르면 랜덤한 비트 리턴
+    },
+
+    make_phonton :(bit,basis)=>{ //(비트, 기저) 광자 생성
+        const new_phonton = structuredClone(defines.quantum);
+        new_phonton.bit = bit;
+        new_phonton.basis = basis;
+
+        if(basis === '+'){ //수평 및 수직 기저
+            new_phonton.polarization = bit === 0?0:1; //인덱스로 관리
+        }else if(basis === 'x'){ //대각선 기저
+            new_phonton.polarization = bit === 0?2:3; 
+        }
+
+        return new_phonton;
     }
 }
+
+//아마 광자는 객체로 관리되고, 광자들은 배열로 관리될 듯
+
+export {defines,functions}
