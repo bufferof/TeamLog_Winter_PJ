@@ -129,6 +129,7 @@ body {
 }
 
 #output_window {
+    white-space: pre-wrap;
     background-color: #eef2f7;
     padding: 16px;
     border-radius: 10px;

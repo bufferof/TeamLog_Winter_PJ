@@ -33,9 +33,9 @@ const functions = {
   string_to_bits: (string) => {
     const encoder = new TextEncoder();
     return [...encoder.encode(string)]
-    .flatMap(byte => 
-        byte.toString(2).padStart(8,'0').split('').map(Number)
-    );
+      .flatMap(byte =>
+        byte.toString(2).padStart(8, '0').split('').map(Number)
+      );
   }
 };
 
