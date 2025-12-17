@@ -1,7 +1,5 @@
 import {defines,functions} from './asset.js'
 
-let session_id //이거 왜 전역변수로 넣었는지는 나도 모르겠지만 고치면 좃될 것 같아서 안고침 
-
 document.addEventListener('DOMContentLoaded',()=>{
     const ws = new WebSocket("ws://localhost:3000"); //포트는 아마 dotenv로 해야할 것 같은데 아직 안넣음
 
@@ -18,7 +16,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     ws.onopen = () => {
         ws.send(JSON.stringify({ // WS에 유저 등록
             type: "register",
-            user_id: user_id
+            user_id: user_id.textContent
         }));
     }
     output_window.textContent = "등록 성공!";
@@ -26,7 +24,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     ws.onmessage = (msg) => {
         const msg_data = JSON.parse(msg.data);
 
-        if(msg.type === "phonton"){
+        if(msg_data.type === "phonton"){
             console.log("광자 수신 완료");
             msg_data.data.forEach(phonton => {
                 const bit = functions.measure(phonton,user_basis.options[user_basis.selectedIndex].value);
@@ -68,7 +66,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             return;
         }
 
-        session_id = res.json.session_id;
+        const { session_id } = await res.json();
         console.log(session_id);
 
         ws.send(JSON.stringify({

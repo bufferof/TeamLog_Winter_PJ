@@ -29,14 +29,23 @@ const simulations = new Map(); //현재 세션 저장
 const userSockets = new Map(); // 현재 유저 저장
 
 wss.on("connection",(ws) => {
-    ws.on("message", (msg) => {
-        if(msg.type === "phonton"){
+    ws.on("message", (raw) => {
+        let msg;
+        try {
+            msg = JSON.parse(raw.toString());
+        } catch (e) {
+            console.error("JSON 파싱 실패", e);
+            return;
+        }
+
+        if(msg.type == "phonton"){
             const session = simulations.get(msg.session_id);
 
             session.phontons.push(...msg.data); //세션에 데이터 저장
 
-            const target_socket = userSockets.get(msg.target);
+            const target_socket = userSockets.get(session.target);
             if(target_socket){
+                console.log("ㅇㅇ2");
                 target_socket.send(JSON.stringify({
                     type: "phonton",
                     session_id: msg.session_id,
@@ -44,7 +53,7 @@ wss.on("connection",(ws) => {
                 }));
             }
 
-        }else if(msg.type === "register"){ //유저 등록
+        }else if(msg.type == "register"){ //유저 등록
             ws.user_id = msg.user_id;
             userSockets.set(msg.user_id,ws);
         }
@@ -66,7 +75,7 @@ app.post("/simulation/start",(req,res)=>{ //연결 세션 만들기
 
     if(!sender || !target || !phonton_count) return res.status(400).json({ok: false});
 
-    const sessionID = crypto.randomUUID;
+    const sessionID = crypto.randomUUID();
 
     simulations.set(sessionID,{
         sender,
