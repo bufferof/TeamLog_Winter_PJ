@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const target = document.getElementById('target');
     const text_send_content = document.getElementById('text_send');
     const output_window = document.getElementById('output_window');
+    const user_basis = document.getElementById('select_phonton');
 
     user_id.textContent = crypto.randomUUID();
 
@@ -23,8 +24,14 @@ document.addEventListener('DOMContentLoaded',()=>{
     output_window.textContent = "등록 성공!";
 
     ws.onmessage = (msg) => {
-        if(msg.type === "phonton"){
+        const msg_data = JSON.parse(msg.data);
 
+        if(msg.type === "phonton"){
+            console.log("광자 수신 완료");
+            msg_data.data.forEach(phonton => {
+                const bit = functions.measure(phonton,user_basis.options[user_basis.selectedIndex].value);
+                console.log(bit)
+            });
         }
     }
 
