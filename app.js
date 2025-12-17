@@ -16,6 +16,14 @@ app.set("view engine","ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; connect-src 'self' ws://localhost:3000"
+  );
+  next();
+});
+
 
 const simulations = new Map(); //현재 세션 저장
 const userSockets = new Map(); // 현재 유저 저장
