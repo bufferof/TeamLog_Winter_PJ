@@ -29,8 +29,23 @@ app.get("/",(req,res)=>{
     res.render("index");
 });
 
-app.post("/send",(req,res)=>{
-    res.json({ ok: true});
+app.post("/simulation/start",(req,res)=>{ //연결 세션 만들기
+    const {sender, target, phonton_count } = req.body;
+
+    if(!sender || !target || !phonton_count) return res.status(400).json({ok: false});
+
+    const sessionID = crypto.randomUUID;
+
+    users.set(sessionID,{
+        sender,
+        target,
+        phonton_count,
+        phontons: [],
+        measure: [],
+        timeStamp: Date.now()
+    });
+
+    res.json({ok: true, session_id: sessionID});
 });
 
 app.listen(PORT,()=>{

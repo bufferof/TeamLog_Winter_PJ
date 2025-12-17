@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     const target = document.getElementById('target');
     const text_send_content = document.getElementById('text_send');
     const output_window = document.getElementById('output_window');
+
+    user_id.textContent = crypto.randomUUID();
     
     simulation_form.addEventListener("submit", async (e)=>{
         e.preventDefault(); //새로고침 막음
@@ -37,20 +39,21 @@ document.addEventListener('DOMContentLoaded',()=>{
             })
         });
 
-        ws.send(JSON.stringify({
-            type: "phonton",
-            sender: user_id.textContent, //보낸 이
-            target: target.value, //받는 이
-            data: message_facilitated
-        }));
-
-
         if(!res.ok){
             //뭔가 에러메시지 프엔에 출력하는 로직
             output_window.textContent = "전송 실패";
             return;
         }
 
+        const { session_id } = res.json;
+
+        ws.send(JSON.stringify({
+            type: "phonton",
+            session_id: session_id,
+            data: message_facilitated
+        }));
+
+        
 
     });
 });
