@@ -45,7 +45,6 @@ wss.on("connection",(ws) => {
 
             const target_socket = userSockets.get(session.target);
             if(target_socket){
-                console.log("ㅇㅇ2");
                 target_socket.send(JSON.stringify({
                     type: "phonton",
                     session_id: msg.session_id,
