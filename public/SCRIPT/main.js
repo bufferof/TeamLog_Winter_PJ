@@ -14,11 +14,19 @@ document.addEventListener('DOMContentLoaded',()=>{
     user_id.textContent = crypto.randomUUID();
 
     output_window.textContent = "유저 등록중...";
-    ws.send(JSON.stringify({ // WS에 유저 등록
-        type: "register",
-        user_id: user_id
-    }));
+    ws.onopen = () => {
+        ws.send(JSON.stringify({ // WS에 유저 등록
+            type: "register",
+            user_id: user_id
+        }));
+    }
     output_window.textContent = "등록 성공!";
+
+    ws.onmessage = (msg) => {
+        if(msg.type === "phonton"){
+
+        }
+    }
 
     
     simulation_form.addEventListener("submit", async (e)=>{
@@ -61,8 +69,5 @@ document.addEventListener('DOMContentLoaded',()=>{
             session_id: session_id,
             data: message_facilitated
         }));
-
-        
-
     });
 });

@@ -27,12 +27,26 @@ wss.on("connection",(ws) => {
 
             session.phontons.push(...msg.data); //세션에 데이터 저장
 
-            
+            const target_socket = userSockets.get(msg.target);
+            if(target_socket){
+                target_socket.send(JSON.stringify({
+                    type: "phonton",
+                    session_id: msg.session_id,
+                    data: msg.data
+                }));
+            }
+
         }else if(msg.type === "register"){ //유저 등록
             ws.user_id = msg.user_id;
             userSockets.set(msg.user_id,ws);
         }
     });
+
+    ws.on("close",()=>{
+        if(ws.user_id){
+            userSockets.delete(ws.user_id);
+        }
+    })
 });
 
 app.get("/",(req,res)=>{
