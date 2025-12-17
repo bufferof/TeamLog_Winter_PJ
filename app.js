@@ -72,6 +72,6 @@ app.post("/simulation/start",(req,res)=>{ //연결 세션 만들기
     res.json({ok: true, session_id: sessionID});
 });
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     console.log(`[http://localhost:${PORT}]${PORT}번 포트에서 실행 중`)
 });
