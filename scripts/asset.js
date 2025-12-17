@@ -32,6 +32,8 @@ const functions = {
 
         return new_phonton;
     }
+
+    
 }
 
 //아마 광자는 객체로 관리되고, 광자들은 배열로 관리될 듯
