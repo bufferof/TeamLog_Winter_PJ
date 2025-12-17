@@ -1,6 +1,6 @@
 import {defines,functions} from './asset.js'
 
-
+let session_id
 
 document.addEventListener('DOMContentLoaded',()=>{
     const ws = new WebSocket("ws://localhost:3000"); //포트는 아마 dotenv로 해야할 것 같은데 아직 안넣음
@@ -12,6 +12,14 @@ document.addEventListener('DOMContentLoaded',()=>{
     const output_window = document.getElementById('output_window');
 
     user_id.textContent = crypto.randomUUID();
+
+    output_window.textContent = "유저 등록중...";
+    ws.send(JSON.stringify({ // WS에 유저 등록
+        type: "register",
+        user_id: user_id
+    }));
+    output_window.textContent = "등록 성공!";
+
     
     simulation_form.addEventListener("submit", async (e)=>{
         e.preventDefault(); //새로고침 막음
@@ -45,7 +53,8 @@ document.addEventListener('DOMContentLoaded',()=>{
             return;
         }
 
-        const { session_id } = res.json;
+        session_id = res.json.session_id;
+        console.log(session_id);
 
         ws.send(JSON.stringify({
             type: "phonton",

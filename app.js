@@ -17,11 +17,21 @@ app.use(express.static("public"));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-const users = new Map();
+const simulations = new Map(); //현재 세션 저장
+const userSockets = new Map(); // 현재 유저 저장
 
 wss.on("connection",(ws) => {
     ws.on("message", (msg) => {
-        
+        if(msg.type === "phonton"){
+            const session = simulations.get(msg.session_id);
+
+            session.phontons.push(...msg.data); //세션에 데이터 저장
+
+            
+        }else if(msg.type === "register"){ //유저 등록
+            ws.user_id = msg.user_id;
+            userSockets.set(msg.user_id,ws);
+        }
     });
 });
 
@@ -36,7 +46,7 @@ app.post("/simulation/start",(req,res)=>{ //연결 세션 만들기
 
     const sessionID = crypto.randomUUID;
 
-    users.set(sessionID,{
+    simulations.set(sessionID,{
         sender,
         target,
         phonton_count,
