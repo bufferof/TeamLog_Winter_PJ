@@ -1,2 +1,1 @@
-import {defines,functions} from './data'
-
+import {defines,functions} from './asset'
