@@ -1,6 +1,6 @@
 import {defines,functions} from './asset.js'
 
-let session_id
+let session_id //이거 왜 전역변수로 넣었는지는 나도 모르겠지만 고치면 좃될 것 같아서 안고침 
 
 document.addEventListener('DOMContentLoaded',()=>{
     const ws = new WebSocket("ws://localhost:3000"); //포트는 아마 dotenv로 해야할 것 같은데 아직 안넣음
