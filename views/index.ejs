@@ -1,39 +1,67 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>팀로그 방프</title>
-    <link rel="stylesheet" href="/CSS/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TeamLog | Quantum Simulation</title>
+    <link rel="stylesheet" href="/CSS/style.css" />
 </head>
 <body>
-    <!-- 누군가 프엔과 디자인을 해줄 것이라 믿음 -->
-    <h2>
-        <span>현재 사용자 ID : </span>
-        <span id="user_id">woneal</span> <!--현재 사용자 아이디 -> 아마 백엔에서 처리?-->
-    </h2>
+    <div class="container">
+        <header class="header">
+            <h1>Quantum Communication Simulator</h1>
+            <p class="subtitle">TeamLog Winter Project</p>
+        </header>
 
-    <select name="select_phonton" id="select_phonton">
-        <option value="+">+</option>
-        <option value="x">x</option>
-    </select>
+        <section class="user-info">
+            <span class="label">현재 사용자</span>
+            <span id="user_id">woneal</span>
+        </section>
 
+        <section class="control-panel">
+            <label for="select_phonton">광자 상태 선택</label>
+            <select name="select_phonton" id="select_phonton">
+                <option value="+">+</option>
+                <option value="x">x</option>
+            </select>
+        </section>
 
-    <form id="simulation">
-        <label for="text_send">보낼 메시지 : </label>
-        <input type="text" id="text_send" name="message">
+        <section class="card">
+            <form id="simulation">
+                <div class="form-group">
+                    <label for="text_send">메시지</label>
+                    <input
+                        type="text"
+                        id="text_send"
+                        name="message"
+                        placeholder="보낼 메시지를 입력하세요"
+                    />
+                </div>
 
-        <br>
+                <div class="form-group">
+                    <label for="target">대상 사용자 ID</label>
+                    <input
+                        type="text"
+                        id="target"
+                        name="target_id"
+                        placeholder="상대방 ID"
+                    />
+                </div>
 
-        <label for="target">보낼 사용자 ID : </label>
-        <input type="text" id="target" name="target_id"> 
+                <button type="submit" id="submit_btn">
+                    시뮬레이션 시작
+                </button>
+            </form>
+        </section>
 
-        <br>
+        <section class="output">
+            <h3>시뮬레이션 결과</h3>
+            <div id="output_window">
+                아직 결과가 없습니다.
+            </div>
+        </section>
+    </div>
 
-        <button type="submit" id="submit_btn">시뮬레이션 시작</button>
-    </form>
-
-    <h3 id="output_window"></h3>
     <script type="module" src="/SCRIPT/main.js"></script>
 </body>
 </html>

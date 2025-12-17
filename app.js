@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const dotenv = require('dotenv');
+const { send } = require('process');
 
 const app = express();
 const server = http.createServer(app);
@@ -55,6 +56,27 @@ wss.on("connection",(ws) => {
         }else if(msg.type == "register"){ //유저 등록
             ws.user_id = msg.user_id;
             userSockets.set(msg.user_id,ws);
+        }else if(msg.type == "basis"){
+            console.log("송신자 기준 측정 완료");
+            const session = simulations.get(msg.session_id);
+
+            let target, type;
+            if(msg.target === "sender"){
+                target = session.sender;
+                type = "basis_sender";
+            }else if(msg.target === "target"){
+                target = session.target;
+                type = "basis_target";
+            }
+
+            const sender_socket = userSockets.get(target);
+            if(sender_socket){
+                sender_socket.send(JSON.stringify({
+                    type: type,
+                    session_id: msg.session_id,
+                    data: msg.basis
+                }))
+            }
         }
     });
 

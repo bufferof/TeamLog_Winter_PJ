@@ -1,5 +1,6 @@
 import {defines,functions} from './asset.js'
 
+
 document.addEventListener('DOMContentLoaded',()=>{
     const ws = new WebSocket("ws://localhost:3000"); //포트는 아마 dotenv로 해야할 것 같은데 아직 안넣음
 
@@ -9,6 +10,11 @@ document.addEventListener('DOMContentLoaded',()=>{
     const text_send_content = document.getElementById('text_send');
     const output_window = document.getElementById('output_window');
     const user_basis = document.getElementById('select_phonton');
+
+    let sender_basis = [];
+    let message_facilitated = [];
+    const final_bits = []; //키임
+    const measure_bits = [];
 
     user_id.textContent = crypto.randomUUID();
 
@@ -23,13 +29,49 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     ws.onmessage = (msg) => {
         const msg_data = JSON.parse(msg.data);
+        
 
+        console.log(msg_data.type);
         if(msg_data.type === "phonton"){
             console.log("광자 수신 완료");
             msg_data.data.forEach(phonton => {
                 const bit = functions.measure(phonton,user_basis.options[user_basis.selectedIndex].value);
-                console.log(bit)
+                measure_bits.push(bit);
             });
+
+            console.log(measure_bits);
+
+            ws.send(JSON.stringify({
+                type: "basis",
+                session_id: msg_data.session_id,
+                data: measure_bits,
+                basis: user_basis.options[user_basis.selectedIndex].value,
+                target: 'sender'
+            }));
+
+        }else if(msg_data.type === "basis_sender"){
+            for(let i=0;i<sender_basis.length;i++){
+                if(sender_basis[i] === msg_data.data){
+                    final_bits.push(message_facilitated[i].bit);
+                }
+            }
+
+            console.log(`키 : ${final_bits}`);
+
+            ws.send(JSON.stringify({
+                type: "basis",
+                session_id: msg_data.session_id,
+                basis: sender_basis,
+                target: 'target',
+            }));
+        }else if(msg_data.type === "basis_target"){
+            for(let i=0;i<msg_data.data.length;i++){
+                if(msg_data.data[i] === user_basis.options[user_basis.selectedIndex].value){
+                    final_bits.push(measure_bits[i]);
+                }
+            }
+
+            console.log(`최종 키 : ${final_bits}`);
         }
     }
 
@@ -41,9 +83,11 @@ document.addEventListener('DOMContentLoaded',()=>{
         const message = text_send_content.value;
         const message_bits = functions.string_to_bits(message);
 
-        let message_facilitated = [];
+        
         for(let bit of message_bits){
-            message_facilitated.push(functions.make_photon(bit,Math.random() < 0.5 ? '+' : 'x'));
+            const basis = Math.random() < 0.5 ? '+' : 'x'
+            sender_basis.push(basis);
+            message_facilitated.push(functions.make_photon(bit,basis));
         }
 
         console.log(message_facilitated);
@@ -74,5 +118,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             session_id: session_id,
             data: message_facilitated
         }));
+
+        
     });
 });
