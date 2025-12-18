@@ -357,6 +357,5 @@ setInterval(() => {
 }, 10 * 60 * 1000);
 
 server.listen(PORT, () => {
-    
-    
+    console.log(`http://localhost:${PORT}에서 실행중`);
 });
