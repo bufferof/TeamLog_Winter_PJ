@@ -9,13 +9,11 @@ body {
     color: #2c2c2c;
 }
 
-
 .container {
     max-width: 520px;
     margin: 60px auto;
     padding: 0 20px;
 }
-
 
 .header h1 {
     font-size: 24px;
@@ -28,7 +26,6 @@ body {
     color: #6b7280;
     margin-bottom: 32px;
 }
-
 
 .user-info {
     display: flex;
@@ -44,13 +41,19 @@ body {
 .user-info .label {
     font-size: 13px;
     color: #6b7280;
+    flex-shrink: 0; /* 라벨이 줄어들지 않도록 */
 }
 
 #user_id {
     font-weight: 600;
     color: #3b82f6;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 350px; /* 최대 너비 설정 */
+    margin-left: 10px;
 }
-
 
 .control-panel {
     margin-bottom: 20px;
@@ -63,6 +66,13 @@ body {
     color: #555;
 }
 
+.info-text {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
 #select_phonton {
     width: 100%;
     padding: 10px;
@@ -71,7 +81,6 @@ body {
     background-color: #fff;
 }
 
-
 .card {
     background-color: #ffffff;
     border-radius: 14px;
@@ -79,7 +88,6 @@ body {
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
     margin-bottom: 24px;
 }
-
 
 .form-group {
     margin-bottom: 18px;
@@ -105,7 +113,6 @@ body {
     border-color: #3b82f6;
 }
 
-
 #submit_btn {
     width: 100%;
     padding: 12px;
@@ -116,24 +123,97 @@ body {
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 #submit_btn:hover {
     background-color: #2563eb;
 }
 
+.output {
+    background-color: #ffffff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}
 
 .output h3 {
     font-size: 16px;
     margin-bottom: 10px;
+    margin-top: 0;
 }
 
 #output_window {
-    white-space: pre-wrap;
+    /* 줄바꿈 및 넘침 방지 */
+    white-space: pre-wrap; /* 공백과 줄바꿈 유지하면서 자동 줄바꿈 */
+    word-wrap: break-word; /* 긴 단어 줄바꿈 */
+    word-break: break-all; /* 긴 문자열(키) 강제 줄바꿈 */
+    overflow-wrap: break-word; /* 추가 보험 */
+    
+    /* 스크롤 설정 */
+    overflow-x: auto; /* 가로 스크롤 (필요시) */
+    overflow-y: auto; /* 세로 스크롤 */
+    max-height: 500px; /* 최대 높이 */
+    
+    /* 스타일 */
     background-color: #eef2f7;
     padding: 16px;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 13px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace; /* 고정폭 글꼴 */
     color: #374151;
     min-height: 60px;
+    line-height: 1.6;
+    
+    /* 박스 크기 */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* 스크롤바 스타일링 (선택사항) */
+#output_window::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+#output_window::-webkit-scrollbar-track {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+#output_window::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 4px;
+}
+
+#output_window::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+    .container {
+        margin: 30px auto;
+        padding: 0 15px;
+    }
+    
+    .header h1 {
+        font-size: 20px;
+    }
+    
+    #user_id {
+        font-size: 11px;
+        max-width: 200px;
+    }
+    
+    #output_window {
+        font-size: 12px;
+        padding: 12px;
+        max-height: 400px;
+    }
+    
+    .card {
+        padding: 18px;
+    }
 }
