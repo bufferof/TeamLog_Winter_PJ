@@ -74,6 +74,16 @@ wss.on("connection", (ws) => {
                     data: msg.basis
                 }))
             }
+        } else if (msg.type == "general") {
+            const session = simulations.get(msg.session_id);
+            const target_socket = userSockets.get(session.target);
+            if (target_socket) {
+                target_socket.send(JSON.stringify({
+                    type: "general",
+                    session_id: msg.session_id,
+                    data: msg.data
+                }));
+            }
         }
     });
 

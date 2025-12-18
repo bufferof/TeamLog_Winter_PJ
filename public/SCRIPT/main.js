@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let message_facilitated = [];
     const final_bits = []; //키임
     const measure_bits = [];
+    let session_id;
 
     user_id.textContent = crypto.randomUUID();
 
@@ -58,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             output_window.textContent += `[!] 키 : ${final_bits.join('')}\n`;
+            output_window.textContent += "[+] 일반 통신으로 전환됨\n";
 
             ws.send(JSON.stringify({
                 type: "basis",
@@ -73,6 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             output_window.textContent += `[!] 키 : ${final_bits.join('')}\n`;
+            output_window.textContent += "[+] 일반 통신으로 전환됨\n";
+        } else if (msg_data.type === "general") {
+            const decoded = functions.decode_message(msg_data.data, final_bits);
+            output_window.textContent += "[+] 메시지 도착\n";
+            output_window.textContent += "[+] 메시지 : "
+            output_window.textContent += functions.bitsToString(decoded);
+            output_window.textContent += "\n"
         }
     }
 
@@ -80,9 +89,19 @@ document.addEventListener('DOMContentLoaded', () => {
     simulation_form.addEventListener("submit", async (e) => {
         e.preventDefault(); //새로고침 막음
 
-        //보내기 전 광자 만들기
         const message = text_send_content.value;
         const message_bits = functions.string_to_bits(message);
+
+        if (final_bits.length > 0) {
+            const encoded = functions.encode_message(message_bits, final_bits);
+
+            ws.send(JSON.stringify({
+                type: "general",
+                session_id: session_id,
+                data: encoded,
+            }));
+            return;
+        }
 
         const temp_bits = [];
         for (let bit of message_bits) {
@@ -116,7 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const { session_id } = await res.json();
+        const { session_id: sid } = await res.json();
+        session_id = sid;
         output_window.textContent += "[+] 현재 세션 아이디\n";
         output_window.textContent += session_id;
         output_window.textContent += "\n";

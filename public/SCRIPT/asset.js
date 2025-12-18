@@ -36,6 +36,23 @@ const functions = {
       .flatMap(byte =>
         byte.toString(2).padStart(8, '0').split('').map(Number)
       );
+  },
+
+  encode_message: (bits, key) => {
+    return bits.map((bit, i) => bit ^ key[i % key.length]);
+  },
+
+  decode_message: (bits, key) => {
+    return bits.map((bit, i) => bit ^ key[i % key.length]);
+  },
+
+  bitsToString: (bits) => {
+    let result = '';
+    for (let i = 0; i < bits.length; i += 8) {
+      const byte = bits.slice(i, i + 8).join('');
+      result += String.fromCharCode(parseInt(byte, 2));
+    }
+    return result;
   }
 };
 
