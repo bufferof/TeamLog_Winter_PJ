@@ -9,14 +9,14 @@ body {
     color: #2c2c2c;
 }
 
-/* 전체 레이아웃 */
+
 .container {
     max-width: 520px;
     margin: 60px auto;
     padding: 0 20px;
 }
 
-/* 헤더 */
+
 .header h1 {
     font-size: 24px;
     font-weight: 600;
@@ -29,7 +29,7 @@ body {
     margin-bottom: 32px;
 }
 
-/* 사용자 정보 */
+
 .user-info {
     display: flex;
     justify-content: space-between;
@@ -51,7 +51,7 @@ body {
     color: #3b82f6;
 }
 
-/* 컨트롤 */
+
 .control-panel {
     margin-bottom: 20px;
 }
@@ -71,7 +71,7 @@ body {
     background-color: #fff;
 }
 
-/* 카드 */
+
 .card {
     background-color: #ffffff;
     border-radius: 14px;
@@ -80,7 +80,7 @@ body {
     margin-bottom: 24px;
 }
 
-/* 폼 */
+
 .form-group {
     margin-bottom: 18px;
 }
@@ -105,7 +105,7 @@ body {
     border-color: #3b82f6;
 }
 
-/* 버튼 */
+
 #submit_btn {
     width: 100%;
     padding: 12px;
@@ -122,7 +122,7 @@ body {
     background-color: #2563eb;
 }
 
-/* 출력 */
+
 .output h3 {
     font-size: 16px;
     margin-bottom: 10px;

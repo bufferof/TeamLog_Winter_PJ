@@ -10,22 +10,13 @@
     <div class="container">
         <header class="header">
             <h1>Quantum Communication Simulator</h1>
-            <p class="subtitle">TeamLog Winter Project</p>
+            <p class="subtitle">TeamLog Winter Project - BB84 Protocol</p>
         </header>
 
         <section class="user-info">
             <span class="label">현재 사용자</span>
-            <span id="user_id">woneal</span>
+            <span id="user_id">로딩중...</span>
         </section>
-
-        <section class="control-panel">
-            <label for="select_phonton">광자 상태 선택</label>
-            <select name="select_phonton" id="select_phonton">
-                <option value="+">+</option>
-                <option value="x">x</option>
-            </select>
-        </section>
-
         <section class="card">
             <form id="simulation">
                 <div class="form-group">
@@ -35,9 +26,9 @@
                         id="text_send"
                         name="message"
                         placeholder="보낼 메시지를 입력하세요"
+                        required
                     />
                 </div>
-
                 <div class="form-group">
                     <label for="target">대상 사용자 ID</label>
                     <input
@@ -45,20 +36,18 @@
                         id="target"
                         name="target_id"
                         placeholder="상대방 ID"
+                        required
                     />
                 </div>
-
                 <button type="submit" id="submit_btn">
-                    시뮬레이션 시작
+                    양자 키 분배 시작
                 </button>
             </form>
         </section>
 
         <section class="output">
             <h3>시뮬레이션 결과</h3>
-            <div id="output_window">
-                아직 결과가 없습니다.
-            </div>
+            <div id="output_window">아직 결과가 없습니다.</div>
         </section>
     </div>
 
